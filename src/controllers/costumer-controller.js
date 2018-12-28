@@ -54,8 +54,6 @@ exports.post = async (req, res, next) => {
     });
     res.status(201).send({ message: "Costumer cadastado com sucesso!" });
   } catch (error) {
-    console.log(error);
-    
     res.status(500).send({
       message: "Erro ao processar sua requisição"
     });
@@ -68,7 +66,6 @@ exports.postAdm = async (req, res, next) => {
     await reposytory.create({
       name: req.body.name,
       email: req.body.email,
-      dependentes: req.body.dependentes,
       password: md5(req.body.password + global.SALT_KEY),
       roles: ["admin"]
     });
@@ -101,11 +98,15 @@ exports.autenticate = async (req, res, next) => {
     res.status(200).send({
       token: token,
       data: {
+        id: customer._id,
         email: customer.email,
-        name:customer.name
+        name:customer.name,
+        role: customer.roles[0]
       }
     });
   } catch (error) {
+    console.log(error);
+    
     res.status(500).send({
       message: "Erro ao processar sua requisição"
     });
@@ -116,6 +117,17 @@ exports.listFilers = async (req, res, next) => {
   try {
     var data = await reposytory.getFiles(req.params.id);
     res.status(200).send(data.files);
+  } catch (error) {
+    res.status(500).send({
+      message: "Erro ao processar sua requisição"
+    });
+  }
+}
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    var data = await reposytory.getById(req.params.id);
+    res.status(200).send(data);
   } catch (error) {
     res.status(500).send({
       message: "Erro ao processar sua requisição"

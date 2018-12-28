@@ -1,7 +1,7 @@
 'use strict'
 
 const http = require('http');
-//const debug = require('debug')('nodestr:server');
+const debug = require('debug')('nodestr:server');
 const app = require('../src/app')
 
 const port = normalizePort(process.env.PORT || '3000');
@@ -33,7 +33,7 @@ function onError(error) {
     }
 
     const bind = typeof port === 'string' ?
-    'Pipe '+port:'Port'+port;
+    'Pipe '+port:'Port'+port
 
     switch (error.code) {
         case 'EACCES':
@@ -54,5 +54,5 @@ function onListening(){
     const bind = typeof addr === 'string'
     ?'pipe '+ addr
     : 'port '+ addr.port;
-   // debug('Listening on' + bind);
+    debug('Listening on' + bind);
 }
