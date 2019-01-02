@@ -18,7 +18,7 @@ exports.getUsers = async () => {
   return res;
 }
 
-exports.autenticate = async(data) => {
+exports.autenticate = async(data) => { 
   const res = await Customer.findOne({
     email: data.email,
      password: data.password});
@@ -36,6 +36,6 @@ exports.update = async(id, data) => {
 
 exports.getFiles = async(id) => {
   const res = await Customer.findById(id, 'title')
-  .populate('files', 'title name createDate');
+  .populate('files', 'title name createDate tipo complemento');
   return res;
 }

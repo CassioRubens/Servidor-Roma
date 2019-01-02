@@ -20,12 +20,13 @@ exports.listFiles = async (req, res, next) => {
 
 exports.getFile = async (req, res, next) => {
   try {
-    var mFile = await reposytory.getById(req.params.id);
+    var mFile = await reposytory.getById(req.params.id); 
     var extencao = await mFile.name.split(".");
     var filePath = await 'src/resources/'+mFile._id+'.'+extencao[1];
    // var file = fs.createWriteStream(filePath);
     res.status(200).download(filePath);
   } catch (error) {
+    
     res.status(500).send({
       message: "Erro ao processar sua requisição"
     });
@@ -33,27 +34,29 @@ exports.getFile = async (req, res, next) => {
 }
 
 exports.uploadFile = async (req, res) => {
- 
   if (Object.keys(req.files).length == 0) {
     return res.status(400).send('No files were uploaded.');
   }
+  var arquivo = JSON.parse(req.body.arquivo);
   var file = await reposytory.create({
-    title: req.params.title,
-    name: req.files.sampleFile.name
+    title: arquivo.titulo,
+    tipo: [arquivo.tipo],
+    name: req.files.sampleFile.name,
+    complemento: arquivo.complemento,
   });
   
   var extencao = req.files.sampleFile.name.split(".");
   var filePath = await 'src/resources/'+file._id+'.'+extencao[1];
   let sampleFile = req.files.sampleFile;
 
-  var user = await repositoryCustomer.getById(req.params.id)
+  var user = await repositoryCustomer.getById(arquivo.idUser)
   if (user != null) {
      user.files.push(file);
-     repositoryCustomer.update(req.params.id, user) 
+     repositoryCustomer.update(arquivo.idUser, user) 
   }
   // Use the mv() method to place the file somewhere on your server
   sampleFile.mv(filePath, function(err) {
-    if (err){
+    if (err){  
       filePath = null;
       return res.status(500).send(err);
     } 

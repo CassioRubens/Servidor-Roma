@@ -89,7 +89,7 @@ exports.autenticate = async (req, res, next) => {
         message: "Usuario ou senha invalidos"
       });
     }
-
+    
     const token = await authService.generateToken({
       id: customer._id,
       email: customer.email,
