@@ -6,9 +6,13 @@ const controller = require("../controllers/costumer-controller");
 
 router.get("/", controller.listCustomers);
 router.get("/users", controller.listUsers);
+router.get("/gerentes", controller.listGerentes);
+router.get("/funcionarios/:id", controller.listFuncionarios);
 router.get("/user/:id", controller.getUserById);
-router.post("/", controller.post);
+router.post("/userComum/:id", controller.postUsuarioComum);
 router.post("/autenticate", controller.autenticate);
 router.get('/files/:id', controller.listFilers);
 router.post('/admin', controller.postAdm);
-module.exports = router;
+router.post('/client', controller.postClient);
+
+module.exports = router;    

@@ -26,12 +26,39 @@ exports.listUsers = async (req, res, next) => {
   }
 };
 
-exports.post = async (req, res, next) => {
+exports.listGerentes = async (req, res, next) => {
   try {
-    await reposytory.create({
+    var data = await reposytory.getGerentes();
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(500).send({
+      message: "Erro ao processar sua requisição"
+    });
+  }
+};
+
+
+exports.listFuncionarios = async (req, res, next) => {
+  try {
+    var data = await reposytory.getFuncionarios(req.params.id);
+    res.status(200).send(data.users);
+  } catch (error) {
+    res.status(500).send({
+      message: "Erro ao processar sua requisição"
+    });
+  }
+};
+
+exports.postUsuarioComum = async (req, res, next) => {
+  //console.log("Teste");
+  
+  try {
+    const customer = await reposytory.create({
       name: req.body.name,
       email: req.body.email,
       cpf: req.body.cpf,
+      contexto: req.body.contexto,
+      regime_de_bens: req.body.regime_de_bens,
       numero_pis: req.body.numero_pis,
       nacionalidade: req.body.nacionalidade,
       mae: req.body.mae,
@@ -52,6 +79,9 @@ exports.post = async (req, res, next) => {
       password: md5(req.body.password + global.SALT_KEY),
       roles: ["user"]
     });
+    var gestor = await reposytory.getById(req.params.id);
+    gestor.users.push(customer._id);
+    await reposytory.update(req.params.id, gestor);
     res.status(201).send({ message: "Costumer cadastado com sucesso!" });
   } catch (error) {
     res.status(500).send({
@@ -60,6 +90,23 @@ exports.post = async (req, res, next) => {
   }
 };
 
+exports.postClient = async (req, res, next) => {
+  try {
+    await reposytory.create({
+      name: req.body.name,
+      email: req.body.email,
+      cnpj: req.body.cnpj,
+      contato: req.body.contato,
+      password: md5(req.body.password + global.SALT_KEY),
+      roles: ["gerente"]
+    });
+    res.status(201).send({ message: "Costumer cadastado com sucesso!" });
+  } catch (error) {
+    res.status(500).send({
+      message: "Erro ao processar sua requisição"
+    });
+  }
+};
 
 exports.postAdm = async (req, res, next) => {
   try {
@@ -83,36 +130,33 @@ exports.autenticate = async (req, res, next) => {
       email: req.body.email,
       password: md5(req.body.password + global.SALT_KEY)
     });
-    
+
     if (!customer) {
       res.status(404).send({
         message: "Usuario ou senha invalidos"
       });
     }
-    
+
     const token = await authService.generateToken({
       id: customer._id,
       email: customer.email,
       name: customer.name
-    }); 
+    });
     res.status(200).send({
       token: token,
       data: {
         id: customer._id,
         email: customer.email,
-        name:customer.name,
+        name: customer.name,
         role: customer.roles[0]
       }
     });
   } catch (error) {
-    console.log(error);
-    
     res.status(500).send({
       message: "Erro ao processar sua requisição"
     });
   }
 };
-
 exports.listFilers = async (req, res, next) => {
   try {
     var data = await reposytory.getFiles(req.params.id);
@@ -122,7 +166,7 @@ exports.listFilers = async (req, res, next) => {
       message: "Erro ao processar sua requisição"
     });
   }
-}
+};
 
 exports.getUserById = async (req, res, next) => {
   try {
@@ -133,4 +177,4 @@ exports.getUserById = async (req, res, next) => {
       message: "Erro ao processar sua requisição"
     });
   }
-}
+};

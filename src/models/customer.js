@@ -5,8 +5,13 @@ const Schema = mongoose.Schema;
 
 const schema = new Schema({
   name: {
-    type: String,
-    required: true
+    type: String, 
+  },
+  cnpj: {
+    type: String
+  },
+  rezao_social: {
+    type: String
   },
   cpf: {
     type: String
@@ -31,7 +36,7 @@ const schema = new Schema({
   },
   sexo: {
     type: String,
-    enum: ["Masculino", "Feminino"],
+    enum: ["Masculino", "Feminino"]
   },
   funcao: {
     type: String
@@ -42,16 +47,23 @@ const schema = new Schema({
   variaveis_salario: {
     type: String
   },
+  regime_de_bens: {
+    type: String
+  },
+  contexto: [{
+    type: String,
+    enum: ["contabil", "fisica", "pessoal"],
+  }],
 
   complemento_trabalhador: {
     residente_exterior: {
-      type:Number
+      type: Number
     },
     endereco: {
       type: String
     },
     numero: {
-      type:String
+      type: String
     },
     bairro: {
       type: String
@@ -66,32 +78,31 @@ const schema = new Schema({
       type: String
     },
     pais: {
-      type:String
+      type: String
     },
     residencia_propria: {
       type: Number
     }
-
   },
-  
+
   identificacao: {
     num_ctps: {
       type: String
     },
-    serie_ctps:{
+    serie_ctps: {
       type: String
     },
     unidade_ctps: {
       type: String
     },
     rg: {
-      type: String 
+      type: String
     },
-    data_expedicao:{
+    data_expedicao: {
       type: String
     },
     orgao_emissor: {
-      type:String
+      type: String
     },
     data_validade: {
       type: Date
@@ -107,7 +118,7 @@ const schema = new Schema({
     },
     email_institucional: {
       type: String
-    }    
+    }
   },
 
   escolaridade: {
@@ -157,7 +168,7 @@ const schema = new Schema({
     tipo10: {
       type: Number
     },
-    irrf:{
+    irrf: {
       type: Number
     },
     salario_familia: {
@@ -166,11 +177,11 @@ const schema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    
   },
   password: {
     type: String,
-    required: true
+    
   },
   dependentes: [
     {
@@ -186,15 +197,20 @@ const schema = new Schema({
     {
       type: String,
       required: true,
-      enum: ["user", "admin", 'gerente'],
+      enum: ["user", "admin", "gerente"],
       defealt: "user"
     }
   ],
-
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer"
+    }
+  ],
   files: [
     {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "File"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "File"
     }
   ]
 });

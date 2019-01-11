@@ -8,8 +8,19 @@ exports.get = async () => {
   return res;
 };
 
+
+exports.getGerentes = async () => {
+  const res = await Customer.find({'roles':['gerente']});
+  return res;
+};
+
 exports.getById = async (id) => {
   const res = await Customer.findById(id);
+  return res;
+};
+
+exports.getFuncionarios = async (id) => {
+  const res = await Customer.findById(id, 'users').populate('users');
   return res;
 };
 
@@ -21,13 +32,14 @@ exports.getUsers = async () => {
 exports.autenticate = async(data) => { 
   const res = await Customer.findOne({
     email: data.email,
-     password: data.password});
-     return res;
+    password: data.password});
+    return res;
 };
 
 exports.create = async(data) => {
   var customer = new Customer(data);
   await customer.save();
+  return customer;
 };
 
 exports.update = async(id, data) => {
