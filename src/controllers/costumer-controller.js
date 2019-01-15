@@ -84,6 +84,7 @@ exports.postUsuarioComum = async (req, res, next) => {
     await reposytory.update(req.params.id, gestor);
     res.status(201).send({ message: "Costumer cadastado com sucesso!" });
   } catch (error) {
+
     res.status(500).send({
       message: "Erro ao processar sua requisição"
     });
@@ -132,10 +133,10 @@ exports.autenticate = async (req, res, next) => {
     });
 
     if (!customer) {
-      res.status(404).send({
+      res.status(203).send({
         message: "Usuario ou senha invalidos"
       });
-    }
+    } else {
 
     const token = await authService.generateToken({
       id: customer._id,
@@ -150,13 +151,14 @@ exports.autenticate = async (req, res, next) => {
         name: customer.name,
         role: customer.roles[0]
       }
-    });
+    });}
   } catch (error) {
     res.status(500).send({
       message: "Erro ao processar sua requisição"
     });
   }
 };
+
 exports.listFilers = async (req, res, next) => {
   try {
     var data = await reposytory.getFiles(req.params.id);
