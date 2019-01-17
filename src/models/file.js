@@ -31,8 +31,10 @@ const schema = new Schema({
   },
   complemento: {
     type: String
-  }
-  ,
+  },
+  via: {
+    type: Boolean,
+  },
   tipo: {
     type: String,
     enum: [
@@ -47,7 +49,8 @@ const schema = new Schema({
       "ICMS e IPI",
       "FEDERL",
       "MUNICIPAL",
-      "ESCRITA CONTÁBIL"
+      "ESCRITA CONTÁBIL",
+      'CLIENTE'
     ]
   }
 });

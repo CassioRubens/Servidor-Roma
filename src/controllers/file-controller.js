@@ -38,9 +38,14 @@ exports.uploadFile = async (req, res) => {
     return res.status(400).send('No files were uploaded.');
   }
   var arquivo = JSON.parse(req.body.arquivo);
+  if (arquivo.via) {
+    arquivo.tipo = 'CLIENTE'
+  }
+  
   var file = await reposytory.create({
     title: arquivo.titulo,
     tipo: [arquivo.tipo],
+    via: arquivo.via,
     contexto: arquivo.contexto,
     name: req.files.sampleFile.name,
     complemento: arquivo.complemento,
