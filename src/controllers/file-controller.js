@@ -41,6 +41,7 @@ exports.uploadFile = async (req, res) => {
   var file = await reposytory.create({
     title: arquivo.titulo,
     tipo: [arquivo.tipo],
+    contexto: arquivo.contexto,
     name: req.files.sampleFile.name,
     complemento: arquivo.complemento,
   });

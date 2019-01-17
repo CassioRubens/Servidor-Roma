@@ -48,6 +48,6 @@ exports.update = async(id, data) => {
 
 exports.getFiles = async(id) => {
   const res = await Customer.findById(id, 'title')
-  .populate('files', 'title name createDate tipo complemento');
+  .populate('files', 'title name createDate tipo complemento contexto');
   return res;
 }

@@ -57,7 +57,6 @@ exports.postUsuarioComum = async (req, res, next) => {
       name: req.body.name,
       email: req.body.email,
       cpf: req.body.cpf,
-      contexto: req.body.contexto,
       regime_de_bens: req.body.regime_de_bens,
       numero_pis: req.body.numero_pis,
       nacionalidade: req.body.nacionalidade,

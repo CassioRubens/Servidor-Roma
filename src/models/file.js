@@ -8,6 +8,9 @@ const schema = new Schema({
     type: String,
     required: false
   },
+  contexto: {
+    type: String
+  },
   createDate: {
     type: Date,
     required: false,
